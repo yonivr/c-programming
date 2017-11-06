@@ -13,11 +13,20 @@ int isValidWord(char s[])
 int isValidCommand(char s[])
 {
     char *valid_commands[] = { "read_comp","print_comp","add_comp","sub_comp" , "mult_comp_real" , "mult_comp_img"  , "mult_comp_comp" , "abs_comp" , "halt" };
+    int i;
+    for(i=0;i<sizeof(valid_commands)/sizeof(valid_commands[0]);i++)
+    {
+        if(strcmp(s,valid_commands[i])==0)
+            return 0;
+    }
+    return -1;
 }
 
-float isValidNumber(char s[])
+int isValidNumber(char s[])
 {
-    return atof(s);
+    if(atof(s)>0)
+        return 0;
+    return -1;
 }
 
 
@@ -93,8 +102,8 @@ int main()
 {
     //char s[]="apple    ,banana,mango,melon";
     char s[]="read_comp A, 45.1, 23.7";
-    char string[]="G";
-    printf("%f\n",isValidNumber(string));
+    char string[]="mult_comp_img mult_comp_img";
+    printf("%d\n",isValidCommand(string));
    // iterateLine(s);
     return 0;
 }
