@@ -2,6 +2,27 @@
 #include <string.h>
 #include <stdlib.h>
 
+
+int isValidWord(char s[])
+{
+    if((s[0]>='A'&&s[0]<='F')&&(strlen(s)==1))
+        return 0;
+    return -1;
+}
+
+int isValidCommand(char s[])
+{
+    char *valid_commands[] = { "read_comp","print_comp","add_comp","sub_comp" , "mult_comp_real" , "mult_comp_img"  , "mult_comp_comp" , "abs_comp" , "halt" };
+}
+
+float isValidNumber(char s[])
+{
+    return atof(s);
+}
+
+
+
+
 /*
 zero a char array 
 */
@@ -72,6 +93,8 @@ int main()
 {
     //char s[]="apple    ,banana,mango,melon";
     char s[]="read_comp A, 45.1, 23.7";
-    iterateLine(s);
+    char string[]="G";
+    printf("%f\n",isValidNumber(string));
+   // iterateLine(s);
     return 0;
 }
