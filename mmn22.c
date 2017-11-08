@@ -89,9 +89,13 @@ void iterateLine(char s[])
 {
     int	i=-1;
     int action=-2;
+    int countcomma=0;
+    int excessflag=0;
     int wordcount=0;
+    int wordstate=0;// 0 - word not started , 1 word started , 2 space after word , 3 word after space
     char c=',';//seperator 
     char *res = malloc (sizeof (char) * strlen(s)); //allocate string for current word
+    char temparr[3];
     /************first word********/
     res = splitComma(s,' ');//split string by space to find first command
     //printf("%s\n",res);
@@ -99,26 +103,70 @@ void iterateLine(char s[])
     if(action==-1)
         printf("Invalid command\n");
     wordcount++;
-   // printf("%d   %s\n",wordcount,res);
+   // printf("%d   %s     %d\n",action,res,wordcount);
     /***********second word*****************/
     i=strlen(res);//start from next word after command
     zeroarr(res);//zero res arr
    res = splitComma(s+i,c);//find next word before comma
-   if(isValidWord(res)==-1)
-   {
-       printf("Invalid complex variable\n");
-   }
-    wordcount++;
+   if(strlen(res)>0)
+        wordcount++;
+ //    printf("%d   %s     %d\n",action,res,wordcount);
+   if(action+1-wordcount<0)
+    {
+        if(excessflag==0)
+        {
+            //printf("got here %d\n",action+1-wordcount);
+            printf("Excessive text\n");
+            excessflag=1;
+        }
+    }
+    else
+    {
+       if(isValidWord(res)==-1&&strlen(res)>0)
+       {
+           printf("%s\n",res);
+           temparr[0]=res[0];
+           temparr[1]='\0';
+           if(isValidWord(temparr)==-1)
+                printf("Invalid complex variable\n");
+       }     
+    }
+   
+    
+    
  //   printf("%d   %s\n",wordcount,res);
    /*************************************/
   // printf("%s\n",res);
 	while(s[++i])//iterate string s until the end
 	{
+	    if(wordstate==0&&s[i]!=' ')
+	    {
+	        wordstate=1;//char in string
+	    }
+	    if(wordstate==1&&s[i]==' ')
+	    {
+	        wordstate=2;//space after char in string
+	    }
+	    if(wordstate==2&&s[i]!=' '&&s[i]!=c)
+	    {
+	        wordstate=3;//char after space in string
+	        printf("Missing comma\n");
+	    }
+	        
 	   if(s[i] == c) //case found seperator
 	   {
+	     if(countcomma==1)
+         {
+            printf("Multiple consecutive commas\n"); 
+            countcomma=0;
+         }
+	      countcomma=1;
+	     // printf("%d\n",countcomma);
 	       zeroarr(res);//zero the current word
 	       res = splitComma(s+i+1,c);//current word is set by offset i from start and comma seperator
-	       wordcount++;
+	       if(strlen(res)>0)
+	             wordcount++;
+	        wordstate=0;
 	  //     printf("%d   %s\n",wordcount,res);
 	       if((wordcount==3&&action==3)&&(isValidNumber(res)==-1))
 	       {
@@ -126,16 +174,27 @@ void iterateLine(char s[])
 	       }
 	       //printf("%s\n",res);
 	   }
+	   else if(s[i]!=c && s[i]!=' ')
+	   {
+	      countcomma=0;
+	   }
 	}  
+    if(action+1-wordcount<0)
+    {
+        if(excessflag==0)
+        {
+            printf("Excessive text\n");
+            excessflag=1;
+        }
+    }
 	
 }
 
 int main()
 {
     //char s[]="apple    ,banana,mango,melon";
-    char s[]="read_comp A, B, 23.7";
-    //char string[]="read_comp1";
-  //  printf("%d\n",isValidCommand(string));
+    //char s[]="read_comp A, B C,  , 23.7,55 ,555af";
+    char s[]="halt";
    iterateLine(s);
     return 0;
 }
