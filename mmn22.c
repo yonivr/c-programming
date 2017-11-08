@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#define LINE_LINE 64
+#define LINE_LEN 64
 
 int isValidWord(char s[])
 {
@@ -97,7 +98,7 @@ char *  splitComma(char s[],char c)
 /**
  * iterate s string , split string by comma and perform actions by the command
  **/
-void iterateLine(char s[])
+int iterateLine(char s[])
 {
     int	i=-1;
     int action=-2;
@@ -111,7 +112,7 @@ void iterateLine(char s[])
     char temparr[3];
     /************first word********/
     if(ifAllSpace(s)==0)
-        return;
+        return 0;
     
     res = splitComma(s,' ');//split string by space to find first command
     if(res[0]==' ')
@@ -212,14 +213,38 @@ void iterateLine(char s[])
             excessflag=1;
         }
     }
-	
+	return 0;
 }
+
+int getLine(char s[], int lim) {
+	int i;
+	int c = 0;
+	printf("Complex numbers calculator ready, please enter command:\n");
+	for (i = 0; i<lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i) {
+		s[i] = c;
+	}
+	s[i++] = c;
+	s[i] = '\0';
+	return i;
+}
+
+
+void readInput()
+{
+	char line[LINE_LEN];
+	while (getLine(line, LINE_LEN) > 0&&)
+	{
+	//	printf("line is		 %s\n", line);
+		iterateLine(line);
+	}
+}
+
 
 int main()
 {
-    //char s[]="apple    ,banana,mango,melon";
-    //char s[]="read_comp A, B C,  , 23.7,55 ,555af";
-    char s[]="                  A ";
-   iterateLine(s);
+    char s[]="print_comp A";
+//	char s[64];
+	readInput(s, 64);
+//	iterateLine(s);
     return 0;
 }
