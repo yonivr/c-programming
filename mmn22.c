@@ -40,6 +40,18 @@ int isValidNumber(char s[])
 }
 
 
+int ifAllSpace(char s[])
+{
+    int i;
+    if(strlen(s)==0)
+        return 0;
+    for(i=0;i<strlen(s);i++)
+    {
+        if(s[i]!=' ')
+            return -1;
+    }
+    return 0;
+}
 
 
 /*
@@ -90,6 +102,7 @@ void iterateLine(char s[])
     int	i=-1;
     int action=-2;
     int countcomma=0;
+    int isOnlySpace=0;
     int excessflag=0;
     int wordcount=0;
     int wordstate=0;// 0 - word not started , 1 word started , 2 space after word , 3 word after space
@@ -97,8 +110,19 @@ void iterateLine(char s[])
     char *res = malloc (sizeof (char) * strlen(s)); //allocate string for current word
     char temparr[3];
     /************first word********/
+    if(ifAllSpace(s)==0)
+        return;
+    
     res = splitComma(s,' ');//split string by space to find first command
-    //printf("%s\n",res);
+    if(res[0]==' ')
+    {
+        while(res[0]!=' ')
+        {
+            res = splitComma(s,' ');
+        }
+    }
+    
+    
     action=isValidCommand(res);
     if(action==-1)
         printf("Invalid command\n");
@@ -108,12 +132,13 @@ void iterateLine(char s[])
     i=strlen(res);//start from next word after command
     zeroarr(res);//zero res arr
    res = splitComma(s+i,c);//find next word before comma
+   
    if(strlen(res)>0)
         wordcount++;
  //    printf("%d   %s     %d\n",action,res,wordcount);
    if(action+1-wordcount<0)
     {
-        if(excessflag==0)
+        if(excessflag==0&&action!=-1)
         {
             //printf("got here %d\n",action+1-wordcount);
             printf("Excessive text\n");
@@ -181,7 +206,7 @@ void iterateLine(char s[])
 	}  
     if(action+1-wordcount<0)
     {
-        if(excessflag==0)
+        if(excessflag==0&&action!=-1)
         {
             printf("Excessive text\n");
             excessflag=1;
@@ -194,7 +219,7 @@ int main()
 {
     //char s[]="apple    ,banana,mango,melon";
     //char s[]="read_comp A, B C,  , 23.7,55 ,555af";
-    char s[]="halt";
+    char s[]="                  A ";
    iterateLine(s);
     return 0;
 }
