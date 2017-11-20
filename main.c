@@ -5,17 +5,17 @@
 #define LINE_LEN 64
 #define HALT 9
 
-int isValidWord(char s[]);
-char * addEnd(char *s);
-int compareString(char *s1, char *s2);
-int isValidCommand(char *s);
-int isValidNumber(char s[]);
-int ifAllSpace(char s[]);
-char * zeroarr(char s[]);
-char *  splitComma(char s[], char c);
-int iterateLine(char s[]);
-int getLine(char s[], int lim);
-void readInput();
+int iterateLine(char s[]);/* iterate s string, split string by comma and perform actions by the command*/
+int isValidWord(char s[]);/*check if char s is a letter between A-F*/
+char * addEnd(char *s);/*add terminator at end of string*/
+int compareString(char *s1, char *s2);/*check if two strings are identical*/
+int isValidCommand(char *s);/*check if string is a valid command*/
+int isValidNumber(char s[]);/*check if strint is a number*/
+int ifAllSpace(char s[]);/*check if entire line is space*/
+char * zeroarr(char s[]);/*zero a char array*/
+char *  splitComma(char s[], char c); /*purpose - return first word until comma*/
+int getLine(char s[], int lim);/*get content of line*/
+void readInput();/*read content of input*/
 
 
 int main()
@@ -28,14 +28,14 @@ int main()
 	return 0;
 }
 
-
+/*check if char s is a letter between A-F*/
 int isValidWord(char s[])
 {
 	if ((s[0] >= 'A'&&s[0] <= 'F') && (strlen(s) == 1))
 		return 0;
 	return -1;
 }
-
+/*check if two strings are identical*/
 int compareString(char *s1, char *s2)
 {
 	int i;
@@ -70,7 +70,7 @@ return 2;
 return -1;
 }
 */
-
+/*check if string is a valid command*/
 int isValidCommand(char *s)
 {
 	char *valid_commands[] = { "halt", "abs" ,"print_comp" , "add_comp","sub_comp" , "mult_comp_real" , "mult_comp_img"  , "mult_comp_comp" , "read_comp" };
@@ -94,7 +94,7 @@ int isValidCommand(char *s)
 	}
 	return -1;
 }
-
+/*check if strint is a number*/
 int isValidNumber(char s[])
 {
 	if (atof(s)>0)
@@ -102,7 +102,7 @@ int isValidNumber(char s[])
 	return -1;
 }
 
-
+/*check if entire line is space*/
 int ifAllSpace(char s[])
 {
 	int i;
@@ -117,9 +117,7 @@ int ifAllSpace(char s[])
 }
 
 
-/*
-zero a char array
-*/
+/*zero a char array*/
 char * zeroarr(char s[])
 {
 	int i;
@@ -280,7 +278,7 @@ int iterateLine(char s[])
 	
 	return 0;
 }
-
+/*get content of line*/
 int getLine(char s[], int lim)
 {
 	int i;
@@ -294,7 +292,7 @@ int getLine(char s[], int lim)
 	return i;
 }
 
-
+/*read content of input*/
 void readInput()
 {
 	int action = 0;
@@ -311,7 +309,7 @@ void readInput()
 }
 
 
-
+/*add terminator at end of string*/
 char * addEnd(char *s)
 {
 	int len = strlen(s)+1;
